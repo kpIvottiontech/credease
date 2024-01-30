@@ -1,6 +1,7 @@
 import 'package:credease/components/common_size/common_hight_width.dart';
 import 'package:credease/components/common_size/nk_font_size.dart';
 import 'package:credease/components/my_common_container.dart';
+import 'package:credease/components/my_form_field.dart';
 import 'package:credease/components/my_regular_text.dart';
 import 'package:credease/components/my_theme_button.dart';
 import 'package:credease/routes/routes.dart';
@@ -114,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             formFieldWidget(login),
             SizedBox(
-              height: AppDimensions.instance!.height / 26,
+              height: AppDimensions.instance!.height / 30,
             ),
             loginBtn(login),
             SizedBox(
@@ -135,12 +136,12 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         MyRegularText(
           fontSize: NkFontSize.regularFont(regularFont: 15.6),
-          label: 'Enter Mobile Number and Login*',
+          label: 'Mobile Number*',
           fontWeight: FontWeight.w500,
           color: primaryTextColor,
         ),
         SizedBox(
-          height: AppDimensions.instance!.height / 30,
+          height: AppDimensions.instance!.height / 80,
         ),
         Obx(() =>  Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,7 +211,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
             ),
-            login.phnValidator == false?
+            login.phnValidator.value == false?
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -226,6 +227,66 @@ class _LoginScreenState extends State<LoginScreen> {
             ) : SizedBox(),
           ],
         ),),
+        SizedBox(
+          height: AppDimensions.instance!.height / 50,
+        ),
+        MyRegularText(
+          fontSize: NkFontSize.regularFont(regularFont: 15.6),
+          label: 'PIN*',
+          fontWeight: FontWeight.w500,
+          color: primaryTextColor,
+        ),
+        SizedBox(
+          height: AppDimensions.instance!.height / 80,
+        ),
+        MyFormField(
+          controller: login.pinTC,
+          labelText: 'PIN',
+          suffixIcon: GestureDetector(
+              onTap: () {
+                login.isVisible1 = !login.isVisible1;
+                setState(() {});
+              },
+              child: Icon(
+                login.isVisible1 ? Icons.visibility : Icons.visibility_off,
+                color: primaryColor,
+              )),
+          obscureText: !login.isVisible1,
+          maxLines: 1,
+          validator: (PassCurrentValue) {
+            RegExp regex = RegExp(
+                r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,20}$');
+
+            if (PassCurrentValue!.isEmpty) {
+              return "Pin";
+            }
+           /* else if (PassCurrentValue!.length < 8) {
+              print('password length is less than 8');
+              return "Please enter atleast 8 character password";
+            } else {
+              if (!regex.hasMatch(PassCurrentValue)) {
+                return ("Password should contain upper, lower, digit\nand Special character ");
+              }*/
+              else {
+                return null;
+              }
+          },
+        ),
+        SizedBox(
+          height: AppDimensions.instance!.height / 60,
+        ),
+        GestureDetector(
+            onTap: () {
+              Get.offAndToNamed(AppRoutes.signUp);
+            },
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: MyRegularText(
+                  label: 'Forgot PIN?',
+                  fontSize: 13,
+                  color: primaryColor,
+                  fontWeight: FontWeight.w500),
+            )),
         SizedBox(
           height: AppDimensions.instance!.height / 90,
         ),
@@ -264,15 +325,14 @@ class _LoginScreenState extends State<LoginScreen> {
           //login.login('0',context: context);
         }
       },
-      buttonText: 'Request OTP',
+      buttonText: 'Login',
       color: primaryColor,
       fontColor: white,
       fontSize: 13,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      height: AppDimensions.instance!.height / 16,
-      width: AppDimensions.instance!.width,
+      width: AppDimensions.instance!.width/3,
       padding: EdgeInsets.zero,
     );
   }

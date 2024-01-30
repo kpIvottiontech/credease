@@ -7,9 +7,11 @@ class LoginController extends GetxController {
   ApiWorker apiWorker = ApiWorker();
   final formKey = GlobalKey<FormState>();
   final mobileTC = TextEditingController();
+  final pinTC = TextEditingController();
   String initialCountry = 'IN';
   PhoneNumber number = PhoneNumber(isoCode: 'IN');
   RxBool phnValidator = true.obs;
+  bool isVisible1 = false;
 
   @override
   void onInit() {
